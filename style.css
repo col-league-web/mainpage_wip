@@ -923,6 +923,22 @@ a {
     object-fit: contain;
 }
 
+.team-logo-fallback,
+.logo-fallback {
+    display: grid;
+    place-items: center;
+    color: var(--col-primary);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.team-mark .team-logo-fallback {
+    width: 100%;
+    height: 100%;
+    font-size: 1.2rem;
+}
+
 .match-team__name {
     font-family: var(--font-heading);
     font-size: 1.4rem;
@@ -1122,6 +1138,13 @@ a {
     width: 46px;
     height: 46px;
     object-fit: contain;
+}
+
+.team-choice-preview .team-logo-fallback {
+    width: 46px;
+    height: 46px;
+    border: 1px solid #333;
+    background: #151515;
 }
 
 .team-choice-preview strong {
@@ -1350,6 +1373,15 @@ a {
     width: 40px;
     height: 40px;
     object-fit: contain;
+}
+
+.swiss-team .logo-fallback {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #333;
+    background: #151515;
+    font-size: 0.75rem;
 }
 
 .swiss-team strong {

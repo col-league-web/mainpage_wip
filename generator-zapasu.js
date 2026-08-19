@@ -1,26 +1,22 @@
 const TWITCH_URL = 'https://www.twitch.tv/col_official';
 
 const teams = [
-    { name: 'Arcana', code: 'ARC', logo: 'Arcana.png' },
-    { name: 'Bandle City', code: 'BAN', logo: 'BandleCity.png' },
-    { name: 'Bilgewater', code: 'BIL', logo: 'Bilgewater.png' },
-    { name: 'Black Roses', code: 'BLA', logo: 'BlackRoses.png' },
-    { name: 'Camavor', code: 'CAM', logo: 'Camavor.png' },
-    { name: 'Celestials', code: 'CEL', logo: 'Celestials.png' },
-    { name: 'Darkins', code: 'DAR', logo: 'Darkins.png' },
-    { name: 'Demacia', code: 'DEM', logo: 'Demacia.png' },
-    { name: 'Demons', code: 'DMN', logo: 'Demons.png' },
-    { name: 'Freljord', code: 'FRE', logo: 'Freljord.png' },
-    { name: 'Ionia', code: 'ION', logo: 'Ionia.png' },
-    { name: 'Ixtal', code: 'IXT', logo: 'Ixtal.png' },
-    { name: 'Ninjas', code: 'NIN', logo: 'Ninjas.png' },
-    { name: 'Noxus', code: 'NOX', logo: 'Noxus.png' },
-    { name: 'Piltover', code: 'PIL', logo: 'Piltover.png' },
-    { name: 'Shadow Isles', code: 'SHI', logo: 'ShadowIsles.png' },
-    { name: 'Shurima', code: 'SHU', logo: 'Shurima.png' },
-    { name: 'Targon', code: 'TAR', logo: 'Targon.png' },
-    { name: 'Void', code: 'VOI', logo: 'Void.png' },
-    { name: 'Zaun', code: 'ZAU', logo: 'Zaun.png' }
+    { name: 'Abominations', code: 'ABO', logo: 'Abominatios.png' },
+    { name: 'Apex Predators', code: 'APX', logo: 'Apex_Predators.png' },
+    { name: 'Arcanists', code: 'ARC', logo: 'Arcanists.png' },
+    { name: 'Draconics', code: 'DRA', logo: 'Draconics.png' },
+    { name: 'Eternals', code: 'ETE', logo: 'Eternals.png' },
+    { name: 'Forgottens', code: 'FOR', logo: 'Forgottens.png' },
+    { name: 'Hellions', code: 'HEL', logo: 'Hellions.png' },
+    { name: 'Imperials', code: 'IMP', logo: 'Imperials.png' },
+    { name: 'Lunars', code: 'LUN', logo: 'Lunars.png' },
+    { name: 'Mystics', code: 'MYS', logo: 'Mystics.png' },
+    { name: 'Protectors', code: 'PRO', logo: 'Protectors.png' },
+    { name: 'Redeemed', code: 'RED', logo: 'Redeemed.png' },
+    { name: 'Revenants', code: 'REV', logo: 'Revenants.png' },
+    { name: 'Solars', code: 'SOL', logo: 'Solars.png' },
+    { name: 'Soul Stealers', code: 'SST', logo: 'Soul_Stealers.png' },
+    { name: 'Vanguards', code: 'VAN', logo: 'Vanguards.png' }
 ];
 
 const form = document.querySelector('#matchGeneratorForm');
@@ -43,7 +39,16 @@ function escapeHtml(value) {
 }
 
 function logoPath(team) {
-    return `assets/team-logos/${team.logo}`;
+    return team.logo ? `assets/team-logos/${team.logo}` : '';
+}
+
+function teamLogoMarkup(team, decorative = false) {
+    if (!team.logo) {
+        return `<span class="team-logo-fallback" aria-hidden="true">${escapeHtml(team.code)}</span>`;
+    }
+
+    const alt = decorative ? '' : `Logo týmu ${escapeHtml(team.name)}`;
+    return `<img src="${logoPath(team)}" alt="${alt}">`;
 }
 
 function populateTeams() {
@@ -95,8 +100,8 @@ function formatDate(value) {
 function updateTeamChoicePreview(targetId, team) {
     const target = document.querySelector(targetId);
     target.innerHTML = `
-        <img src="${logoPath(team)}" alt="Logo týmu ${escapeHtml(team.name)}">
-        <div><strong>${escapeHtml(team.name)}</strong><span>${escapeHtml(team.logo)}</span></div>
+        ${teamLogoMarkup(team)}
+        <div><strong>${escapeHtml(team.name)}</strong><span>${team.logo ? escapeHtml(team.logo) : 'Logo zatím chybí'}</span></div>
     `;
 }
 
@@ -123,7 +128,7 @@ function createSnippet(values) {
 
     return `<article class="match-card-new">
     <div class="match-team">
-        <div class="team-mark"><img src="${logoPath(values.team1)}" alt="Logo týmu ${team1Name}"></div>
+        <div class="team-mark">${teamLogoMarkup(values.team1)}</div>
         <div>
             <div class="match-team__name">${team1Name}</div>
             <div class="match-team__record">${values.team1Record}</div>
@@ -137,7 +142,7 @@ function createSnippet(values) {
         </div>
     </div>
     <div class="match-team match-team--right">
-        <div class="team-mark"><img src="${logoPath(values.team2)}" alt="Logo týmu ${team2Name}"></div>
+        <div class="team-mark">${teamLogoMarkup(values.team2)}</div>
         <div>
             <div class="match-team__name">${team2Name}</div>
             <div class="match-team__record">${values.team2Record}</div>
