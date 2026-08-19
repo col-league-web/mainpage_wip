@@ -28,6 +28,9 @@ const errorBox = document.querySelector('#generatorError');
 const copyButton = document.querySelector('#copyCode');
 const copyStatus = document.querySelector('#copyStatus');
 const resetButton = document.querySelector('#resetGenerator');
+const scoreFields = document.querySelector('#scoreFields');
+const pasteTarget = document.querySelector('#pasteTarget');
+const pasteHint = document.querySelector('#pasteHint');
 
 function escapeHtml(value) {
     return String(value)
@@ -81,9 +84,9 @@ function formatRecord(wins, losses) {
 }
 
 function formatDate(value) {
-    if (!value) return { display: 'DOPLŇ DATUM', iso: '' };
+    if (!value) return { display: 'DOPLŇ DATUM', dateOnly: 'DOPLŇ DATUM', iso: '' };
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return { display: 'DOPLŇ DATUM', iso: '' };
+    if (Number.isNaN(date.getTime())) return { display: 'DOPLŇ DATUM', dateOnly: 'DOPLŇ DATUM', iso: '' };
 
     const datePart = new Intl.DateTimeFormat('cs-CZ', {
         day: 'numeric',
@@ -94,7 +97,13 @@ function formatDate(value) {
         minute: '2-digit'
     }).format(date);
 
-    return { display: `${datePart} · ${timePart}`, iso: value };
+    const dateOnly = new Intl.DateTimeFormat('cs-CZ', {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+    }).format(date);
+
+    return { display: `${datePart} · ${timePart}`, dateOnly, iso: value };
 }
 
 function updateTeamChoicePreview(targetId, team) {
@@ -114,8 +123,11 @@ function readValues() {
         phase: form.phase.value,
         round: String(Math.max(1, Number(form.round.value) || 1)).padStart(2, '0'),
         date: formatDate(form.startAt.value),
+        state: form.matchState.value,
         format: form.format.value,
-        broadcast: form.broadcast.checked
+        broadcast: form.broadcast.checked,
+        team1Score: Math.max(0, Number(form.team1Score.value) || 0),
+        team2Score: Math.max(0, Number(form.team2Score.value) || 0)
     };
 }
 
@@ -125,8 +137,22 @@ function createSnippet(values) {
     const broadcastBadge = values.broadcast
         ? `\n                <a class="match-badge match-badge--live" href="${TWITCH_URL}" target="_blank" rel="noopener">Twitch broadcast</a>`
         : '';
+    const isFinished = values.state === 'finished';
+    const articleClass = isFinished ? 'match-card-new match-card-new--finished' : 'match-card-new';
+    const centerContent = isFinished
+        ? `<div class="match-meta">${escapeHtml(values.phase)} · KOLO ${values.round} · ${escapeHtml(values.date.dateOnly)}</div>
+        <div class="match-score">${values.team1Score} : ${values.team2Score}</div>
+        <div class="match-badges">
+            <span class="match-badge">DOHRÁNO</span>
+            <span class="match-badge">${escapeHtml(values.format)}</span>${broadcastBadge}
+        </div>`
+        : `<div class="match-meta">${escapeHtml(values.phase)} · KOLO ${values.round}</div>
+        <time class="match-time" datetime="${escapeHtml(values.date.iso)}">${escapeHtml(values.date.display)}</time>
+        <div class="match-badges">
+            <span class="match-badge">${escapeHtml(values.format)}</span>${broadcastBadge}
+        </div>`;
 
-    return `<article class="match-card-new">
+    return `<article class="${articleClass}">
     <div class="match-team">
         <div class="team-mark">${teamLogoMarkup(values.team1)}</div>
         <div>
@@ -135,11 +161,7 @@ function createSnippet(values) {
         </div>
     </div>
     <div class="match-center">
-        <div class="match-meta">${escapeHtml(values.phase)} · KOLO ${values.round}</div>
-        <time class="match-time" datetime="${escapeHtml(values.date.iso)}">${escapeHtml(values.date.display)}</time>
-        <div class="match-badges">
-            <span class="match-badge">${escapeHtml(values.format)}</span>${broadcastBadge}
-        </div>
+        ${centerContent}
     </div>
     <div class="match-team match-team--right">
         <div class="team-mark">${teamLogoMarkup(values.team2)}</div>
@@ -157,6 +179,8 @@ function validate(values, showMessage = true) {
         message = 'Vyber dva rozdílné týmy.';
     } else if (!form.startAt.value) {
         message = 'Doplň datum a čas zápasu.';
+    } else if (values.state === 'finished' && (form.team1Score.value === '' || form.team2Score.value === '')) {
+        message = 'Doplň výsledné skóre obou týmů.';
     }
 
     errorBox.hidden = !message || !showMessage;
@@ -166,6 +190,10 @@ function validate(values, showMessage = true) {
 
 function render(showErrors = false) {
     const values = readValues();
+    const isFinished = values.state === 'finished';
+    scoreFields.hidden = !isFinished;
+    pasteTarget.textContent = isFinished ? '#odehrane' : '#nejblizsi';
+    pasteHint.textContent = isFinished ? ' mezi ostatní odehrané zápasy' : ' pod komentář „NOVÝ VYGENEROVANÝ ZÁPAS“';
     updateTeamChoicePreview('#team1Preview', values.team1);
     updateTeamChoicePreview('#team2Preview', values.team2);
 

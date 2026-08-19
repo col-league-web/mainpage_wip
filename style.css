@@ -1589,8 +1589,8 @@ a {
 .bracket-match {
     position: absolute;
     top: var(--slot);
-    right: 12px;
-    left: 12px;
+    right: 0;
+    left: 0;
     transform: translateY(-50%);
     border: 1px solid #333;
     background: #121212;
@@ -1666,18 +1666,18 @@ a {
         linear-gradient(#3a3a3a, #3a3a3a) 0 31.25% / 50% 1px no-repeat,
         linear-gradient(#3a3a3a, #3a3a3a) 0 56.25% / 50% 1px no-repeat,
         linear-gradient(#3a3a3a, #3a3a3a) 0 81.25% / 50% 1px no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 6.25% / 1px 25% no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 56.25% / 1px 25% no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 18.75% / 50% 1px no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 68.75% / 50% 1px no-repeat;
+        linear-gradient(#3a3a3a, #3a3a3a) 50% 8.3333% / 1px 25% no-repeat,
+        linear-gradient(#3a3a3a, #3a3a3a) 50% 75% / 1px 25% no-repeat,
+        linear-gradient(#3a3a3a, #3a3a3a) 100% 18.75% / 50% 1px no-repeat,
+        linear-gradient(#3a3a3a, #3a3a3a) 100% 68.75% / 50% 1px no-repeat;
 }
 
 .bracket-lines--semi {
     background:
         linear-gradient(#3a3a3a, #3a3a3a) 0 18.75% / 50% 1px no-repeat,
         linear-gradient(#3a3a3a, #3a3a3a) 0 68.75% / 50% 1px no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 18.75% / 1px 50% no-repeat,
-        linear-gradient(#3a3a3a, #3a3a3a) 50% 43.75% / 50% 1px no-repeat;
+        linear-gradient(#3a3a3a, #3a3a3a) 50% 37.5% / 1px 50% no-repeat,
+        linear-gradient(#3a3a3a, #3a3a3a) 100% 43.75% / 50% 1px no-repeat;
 }
 
 .bracket-lines--final {
@@ -1687,8 +1687,8 @@ a {
 .champion-card {
     position: absolute;
     top: 43.75%;
-    right: 12px;
-    left: 12px;
+    right: 0;
+    left: 0;
     padding: 1.4rem 1rem;
     border: 1px solid var(--col-primary);
     background: radial-gradient(circle at top, rgba(255, 70, 0, 0.2), transparent 70%), #111;

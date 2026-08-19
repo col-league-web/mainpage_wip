@@ -84,14 +84,27 @@
                                 <label for="startAt">Datum a čas *</label>
                                 <input id="startAt" name="startAt" type="datetime-local" required>
                             </div>
-                            <div class="generator-field">
-                                <label for="format">Formát *</label>
-                                <select id="format" name="format" required>
-                                    <option value="BO2" selected>BO2</option>
-                                    <option value="BO1">BO1</option>
-                                    <option value="BO3">BO3</option>
-                                    <option value="BO5">BO5</option>
-                                </select>
+                            <div class="generator-field-row">
+                                <div class="generator-field">
+                                    <label for="matchState">Stav zápasu *</label>
+                                    <select id="matchState" name="matchState" required>
+                                        <option value="scheduled" selected>Nadcházející</option>
+                                        <option value="finished">Dohraný</option>
+                                    </select>
+                                </div>
+                                <div class="generator-field">
+                                    <label for="format">Formát *</label>
+                                    <select id="format" name="format" required>
+                                        <option value="BO2" selected>BO2</option>
+                                        <option value="BO1">BO1</option>
+                                        <option value="BO3">BO3</option>
+                                        <option value="BO5">BO5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="generator-field-row generator-score-fields" id="scoreFields" hidden>
+                                <div class="generator-field"><label for="team1Score">Výsledek prvního týmu *</label><input id="team1Score" name="team1Score" type="number" min="0" value="1"></div>
+                                <div class="generator-field"><label for="team2Score">Výsledek druhého týmu *</label><input id="team2Score" name="team2Score" type="number" min="0" value="1"></div>
                             </div>
                             <label class="generator-check" for="broadcast">
                                 <input id="broadcast" name="broadcast" type="checkbox" checked>
@@ -122,7 +135,7 @@
                     </div>
                     <p class="copy-status" id="copyStatus" aria-live="polite"></p>
                     <div class="generator-help">
-                        Otevři soubor <code>zapasy.html</code> a vlož snippet do sekce <code>#nejblizsi</code> pod komentář „NOVÝ VYGENEROVANÝ ZÁPAS“.
+                        Otevři soubor <code>zapasy.html</code> a vlož snippet do sekce <code id="pasteTarget">#nejblizsi</code><span id="pasteHint"> pod komentář „NOVÝ VYGENEROVANÝ ZÁPAS“</span>.
                     </div>
                 </section>
             </div>
